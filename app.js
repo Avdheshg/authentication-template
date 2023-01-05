@@ -165,7 +165,7 @@ app.post("/signup", async (req, res) => {
    
     // const token = jwt.sign({id: newUser._id}, "this is the secret of jwt");
     const token = createSendToken(newUser, 201, res);
-    
+        
   } catch (err) {
     console.log(err);                                           
     res.status(400).json({
