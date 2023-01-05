@@ -43,10 +43,10 @@ const generateJWT = (id) => {
   return jwt.sign({id: id}, "this is the secret of jwt");
 }
 const createSendToken = (user, statusCode, res) => {
-  console.log("*** app.js => createSendToken  ***");
+  console.log("*** app.js => createSendToken  ***");     
   const token = generateJWT(user._id);                  
 
-  // COOKIE      
+  // COOKIE         
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -54,17 +54,17 @@ const createSendToken = (user, statusCode, res) => {
     httpOnly: true             
   };
 
-  res.cookie('jwt', token, cookieOptions);
+  res.cookie('jwt', token, cookieOptions);   
 
-  user.password = undefined;
+  user.password = undefined;    
 
   res.status(statusCode).json({
-    status: 'success',
+    status: 'success',     
     token,
     data: {
-      user
-    }
-  });
+      user    
+    }    
+  });  
 };
 
 
@@ -149,27 +149,32 @@ app.get("/overview", authController.protect, (req, res) => {
 
 
 // ===== SIGNUP  ==========
+app.get("/signup", (req, res) => {  
+  console.log("*** app.js => 6. get /signup  ***");
+  res.status(200).render("signup");
+})
 app.post("/signup", async (req, res) => {
+  console.log("*** app.js => 7. post /signup  ***");
   try {    
     const newUser = await User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm
+      passwordConfirm: req.body.passwordConfirm     
     })      
    
     // const token = jwt.sign({id: newUser._id}, "this is the secret of jwt");
     const token = createSendToken(newUser, 201, res);
     
   } catch (err) {
-    console.log(err);                                         
+    console.log(err);                                           
     res.status(400).json({
-      status: "fail",
+      status: "fail",   
       message: err
     })      
   }
 })
-
+  
 
 
 

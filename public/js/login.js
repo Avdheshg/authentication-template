@@ -17,7 +17,8 @@ const showAlert = (type, msg) => {
   document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
   window.setTimeout(hideAlert, 5000);
 };
-   
+
+
 
 // ============   LOGIN    ============ 
 const loginForm = document.querySelector(".form");
@@ -101,41 +102,55 @@ if (logoutBtn) {
     logoutBtn.addEventListener("click", logoutFunction);
 }    
       
-// ========     Overview    ===========
-// const overviewFunction = async () => {
-//     console.log("*** login.js => 6. Overview Function  ***");
-//     try {      
-//         console.log("Making a POST request in axios to /overview route");
 
-//         const res = await axios({
-//             method: 'GET',
-//             url: '/overview'             
-//         })
+// ============   SIGNUP    ============ 
+const signupForm = document.querySelector(".signup-form");
+if (signupForm) {
+    console.log("*** login.js => 5. signupForm  ***");
+    signupForm.addEventListener("submit", e => {   
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;        
+        const password = document.getElementById("password").value;
+        const passwordConfirm = document.getElementById("confirm-password").value;
 
-//         console.log("POST req completed to /overview route and the data is received. Now calling the overview MW ");
-//         // console.log(res);
+        // console.log("email", email, " password", password);
+        signupFunction(name, email, password, passwordConfirm);       
+    })
+}     
 
-//         if (res.data.status === 'success') {
-//             showAlert('success', 'Logged in successfully!');
-//             window.setTimeout(() => {
-//                 location.assign('/overview');      
-//             }, 200);     
-//         } else {
-//             showAlert('failure', 'Log in to get access!');
-//         }
- 
-//     } catch (err) {           
-//         console.log(err);
-//         showAlert("error", err.response.data.message);   
-//     }
-// }
+const signupFunction = async (name, email, password, passwordConfirm) => {
+    console.log("*** login.js => 6. signup Function  ***");
+    try {
+        console.log("Making a POST request in axios to post /signup route");
 
-// const overviewBtn = document.querySelector(".overview-btn");
-// if (overviewBtn) {
-//     console.log("*** login.js => 5. Overview Btn  ***");
-//     overviewBtn.addEventListener("click", overviewFunction);
-// }
+        const res = await axios({
+            method: 'POST',
+            url: '/signup',
+            data: {
+                name,
+                email,
+                password,
+                passwordConfirm 
+            }
+        })
 
+        console.log("POST req completed to  post /signup and the data is received. Now calling the home MW ");
+        console.log(res);
+
+        if (res.data.status === 'success') {
+            showAlert('success', 'New Account created successfully!');
+            window.setTimeout(() => {
+                location.assign('/home');      
+            }, 2000);    
+        }        
+        
+    } catch (err) {           
+        console.log(err);
+        showAlert("error", err);   
+    }
+}
+   
 
 
 

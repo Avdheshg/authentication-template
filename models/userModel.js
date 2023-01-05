@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
         type: String,  
         required: [true, 'Please provide a password'],
         // minlength: 5,
-        select: false   // pass will not be shown to the User
+        select: false   // pass will not be shown to the User    
     },
     passwordConfirm: {
         type: String,
@@ -28,11 +28,11 @@ const userSchema = new mongoose.Schema({
             validator: function(el) {
                 return el === this.password
             },
-            message: "Passwords are not the same!"
+            message: "Passwords are not the same!"   
         }
     },
-    photo: Number
-});
+    photo: Number    
+});   
    
 // pre MW for checking "password" and "passwordConfirm"
 userSchema.pre("save", async function(next) {
