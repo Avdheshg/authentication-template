@@ -21,7 +21,7 @@ const showAlert = (type, msg) => {
 
 
 // ============   LOGIN    ============ 
-const loginForm = document.querySelector(".form");
+const loginForm = document.querySelector(".form--login");
 if (loginForm) {
     console.log("*** login.js => 1. loginForm  ***");
     loginForm.addEventListener("submit", e => {
@@ -85,7 +85,7 @@ const logoutFunction = async () => {
         showAlert('success', 'Logged out successfully!');
         // location.reload(true);  
         window.setTimeout(() => {
-            location.assign('/view/login'); 
+            location.assign('/login'); 
         }, 2000);
 
       }           
@@ -94,7 +94,7 @@ const logoutFunction = async () => {
       showAlert('error', 'Error logging out! Try again.');      
     }     
 };  
-
+   
 const logoutBtn = document.querySelector(".logout");
 if (logoutBtn) {    
     console.log("*** login.js => 4. logoutBtn  ***");
@@ -146,12 +146,120 @@ const signupFunction = async (name, email, password, passwordConfirm) => {
             }, 2000);    
         }        
         
-    } catch (err) {           
+    } catch (err) {              
         console.log(err);
         showAlert("error", err);   
     }
 }
    
+
+// =================   PUG :: FORGOT PASSWORD     =================   
+const forgotPassword = document.querySelector(".form--forgotPassword");
+if (forgotPassword) {
+    forgotPassword.addEventListener("submit", e => {
+        e.preventDefault();    
+        const email = document.getElementById("email").value;
+
+        forgotPasswordFunction(email);
+    })
+} 
+
+const forgotPasswordFunction = async (email) => {   
+    console.log("*** login.js :: forgotPasswordFunction  ***");  
+
+    try {
+        const res = await axios({
+            method: 'POST',
+            url: '/forgotPassword',
+            data: {    
+                email
+            }
+        })
+
+        console.log("POST req to /forgotPassword is completed and the data is", res);   
+
+        if (res.data.status === 'success') {
+            showAlert('success', 'Email sent successfully!');
+            // window.setTimeout(() => {    
+            //     location.assign('/home');      
+            // }, 2000);           
+        }        
+   
+    } catch (err) {
+        console.log("axios err",  err);
+        showAlert("error", err);    
+    }
+}
+
+
+// =================   PUG :: RESET PASSWORD     ================= 
+const resetPasswordForm = document.querySelector(".form--resetPassword");
+if (resetPasswordForm) {
+    resetPasswordForm.addEventListener("submit", e => {
+        e.preventDefault();
+
+        const password = document.getElementById("password").value;
+        const passwordConfirm = document.getElementById("confirm-password").value;
+        const token = document.getElementById("token-input").value;
+
+        console.log(password, passwordConfirm, token);
+        resetPasswordFunction(password, passwordConfirm, token);
+    })
+}
+
+const resetPasswordFunction = async (password, passwordConfirm, token) => {
+    console.log("*** login.js :: resetPasswordFunction  ***");  
+
+    try {
+        const  res = await axios({   
+            method: 'PATCH',
+            url: `/resetPassword/${token}`,
+            data: {         
+                password,
+                passwordConfirm    
+            }
+        })   
+                 
+          
+
+        console.log("POST req to /resetPassword is completed and the data is", res);       
+
+        if (res.data.status === 'success') {
+            showAlert('success', 'Password changed successfully!');
+            window.setTimeout(() => {    
+                location.assign('/login');      
+            }, 1000);           
+        }        
+   
+    } catch (err) {
+        console.log("axios err",  err);
+        showAlert("error", err);    
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

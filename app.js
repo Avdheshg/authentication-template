@@ -112,7 +112,7 @@ app.post("/login", async (req, res) => {
 
 
 // ===== VIEW:: LOGIN  ==========   
-app.get("/view/login", (req, res) => {
+app.get("/login", (req, res) => {
   console.log("*** app.js => 2. /view/login  ***");
   res.status(200).render("login");
 })
@@ -166,25 +166,31 @@ app.post("/signup", async (req, res) => {
         
   } catch (err) {
     console.log(err);                                           
-    res.status(400).json({
+    res.status(400).json({      
       status: "fail",   
-      message: err
+      message: err       
     })      
   }
 })
   
 // ===========         Forgot Password      =======================
+app.get("/forgotPassword", (req, res) => {     
+  res.status(200).render("forgotPassword", {title: "Forgot Password"});
+})     
 app.post("/forgotPassword", authController.forgotPassword);
 
 // ===========         Password Reset      =======================
+app.get("/resetPassword/:token", (req, res) => {     
+  res.status(200).render("resetPassword", {title: "Reset Password", resetToken: req.params.token});
+});
 app.patch("/resetPassword/:token", authController.resetPassword);
 
 
 
-
+  
 /* 
   Password reading is disbaled from DB
-
+    
 */
 
 
@@ -218,7 +224,30 @@ app.listen(3000, () => {
 
 
 
+/* 
 
+const pug = require('pug');
+
+const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+  firstName: this.firstName,
+  url: this.url,
+  subject
+});
+
+// 2) Define email options
+const mailOptions = {
+  from: this.from,
+  to: this.to,
+  subject,
+  html,
+  text: htmlToText.fromString(html)
+};
+
+const resetURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/users/resetPassword/${resetToken}`;
+
+*/
 
 
 
