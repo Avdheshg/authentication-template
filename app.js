@@ -22,8 +22,6 @@ app.set('view engine', 'pug');
 app.set("views", path.join(__dirname, "views"));
 
 
-
-  
 // =============   DATABASE   =================
 const DB = `mongodb+srv://carWorldAvdhesh:aQw9j5XOuCWLVHnE@cluster0.kzcjw.mongodb.net/cars?retryWrites=true&w=majority`
 mongoose.set('strictQuery', false);
@@ -148,7 +146,7 @@ app.get("/overview", authController.protect, (req, res) => {
 
 
 
-// ===== SIGNUP  ==========
+// ===========         SIGNUP      =======================
 app.get("/signup", (req, res) => {  
   console.log("*** app.js => 6. get /signup  ***");
   res.status(200).render("signup");
@@ -175,7 +173,11 @@ app.post("/signup", async (req, res) => {
   }
 })
   
+// ===========         Forgot Password      =======================
+app.post("/forgotPassword", authController.forgotPassword);
 
+// ===========         Password Reset      =======================
+app.patch("/resetPassword/:token", authController.resetPassword);
 
 
 

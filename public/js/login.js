@@ -107,6 +107,7 @@ if (logoutBtn) {
 const signupForm = document.querySelector(".signup-form");
 if (signupForm) {
     console.log("*** login.js => 5. signupForm  ***");
+    
     signupForm.addEventListener("submit", e => {   
         e.preventDefault();
         const name = document.getElementById("name").value;
